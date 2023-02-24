@@ -3,6 +3,7 @@ package ru.podgoretskaya.Authorization.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.podgoretskaya.Authorization.dto.ManagementDTO;
 import ru.podgoretskaya.Authorization.dto.UserDTO;
 import ru.podgoretskaya.Authorization.entity.UserEntity;
 import ru.podgoretskaya.Authorization.enums.UserRole;
@@ -10,7 +11,6 @@ import ru.podgoretskaya.Authorization.mapper.UserMapper;
 import ru.podgoretskaya.Authorization.repository.UserRepo;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Base64;
 
 import static ru.podgoretskaya.Authorization.enums.UserRole.*;
@@ -25,7 +25,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registration(UserDTO userDTO) {
         UserEntity userEntity = userMapper.toEntity(userDTO);
-        userEntity.setRole(STUDENT);
+        // userEntity.setRole(STUDENT);
+        //todo как создать админа первый раз??? в этом методе должны быть только струденты
         userEntity.setPassword(encryptedPassword(userEntity.getPassword()));
         userRepo.save(userEntity);
     }
@@ -33,18 +34,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserRole login(String login, String password) {
         UserEntity userEntity = userRepo.findByUsername(login).orElseThrow(IllegalArgumentException::new);
-        if (userEntity.getUsername().equals(login)&&
+        if (userEntity.getUsername().equals(login) &&
                 (userEntity.getPassword().equals(encryptedPassword(password)))) {
             return userEntity.getRole();
-        }
-        else   return ANONYMOUS;
+        } else return ANONYMOUS;
     }
 
 
     @Override
-    public void registrationTeacher(UserDTO userDTO) {
-        UserEntity userEntity = userMapper.toEntity(userDTO);
-        userEntity.setRole(TEACHER);
+    public void registrationManagement(ManagementDTO managementDTO) {
+        UserEntity userEntity = userMapper.managementToEntity(managementDTO);
         userRepo.save(userEntity);
     }
 

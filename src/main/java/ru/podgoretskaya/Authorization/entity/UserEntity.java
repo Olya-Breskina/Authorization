@@ -25,7 +25,6 @@ public class UserEntity {
     private String lastName;
     @Column(nullable = false)
     private String firstName;
-   // @ManyToOne(fetch = FetchType.LAZY)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;

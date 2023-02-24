@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+import ru.podgoretskaya.Authorization.dto.ManagementDTO;
 import ru.podgoretskaya.Authorization.dto.UserDTO;
 import ru.podgoretskaya.Authorization.service.UserService;
 
@@ -39,8 +40,8 @@ private final UserService userService;
 
     }
     @PostMapping(value = "/admin")// админ создает пользователя
-    public void getAuthorizationTeacher(@RequestBody UserDTO model) {
-        userService.registrationTeacher(model);
+    public void getAuthorizationTeacher(@RequestBody ManagementDTO model) {
+        userService.registrationManagement(model);
     }
 
 }
